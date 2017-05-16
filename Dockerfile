@@ -34,4 +34,4 @@ WORKDIR /build
 COPY ./mingw-w64-build-3.6.7.local /build/mingw-w64-build-3.6.7.local
 COPY ./install_cross_compiler.sh /build/install_cross_compiler.sh
 
-RUN install_cross_compiler.sh
+RUN ./install_cross_compiler.sh
