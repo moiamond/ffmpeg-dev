@@ -41,7 +41,8 @@ deploy:
   api_key:
     secure: SefvbPwNw5ItgVbtvM5H9hjTuq+B91uV+pPbqtZCTCluv3hCxn1ComW06JBhlznpVDrXX+d8GRmCNd3MBIdLFskbfwh/J01vap0QeHOfSPnBNMLB7Mx2rxH9a8OIBzLIq5u8YGVJfHLxhseTvH7wP4iUFHra1EsxZRqV9Nw8AWf/iXVjMK/vNpkAFwjXCNGIf1eBepsUr7LWQbziWIElW2iwexlai5ciP2ib52xEM9fsu9EnodnieJrrr8gLm5xsHwTp9pmxqsSSBf1vPWYvjtbyX/hvF3Ti+clvX7EGGT0uGA8g9qD0rq0XBPLVSCjtVTJfLlb+4Rj/VoYD0yUzcEXOVNq4JymPKZH/mYGDlqnl7gaVuoYJ3lSQsNBOKvV8HRofGXS7fbXMr19pM2jhFTRItzBurX6BUg7IIadXZgflj8ZuGyICGLin+AG77EgJUf3A9gk6Zr1GRkOB9uiDs0XIAbXek8/nMl1dE6K3esFXdgr3cOU5dI90/RbZ4I5x0z2brUq20PsNrLlA3hPlyhtnkH/WSr2cXNc2kWEfUlsHda9SG85Kv3Qsncl/03sEV01xsVg+VNxmvnuTjVu0UqtZUQPcg/T3Tb9tLtXGIMZ6R+GAkQAx22LbghLavH8NC157pWp6wTOk1IYHitq1vht3o7grfGQ5HKW/dpZNHL8=
   file: 
-  - ffmpeg-3.3-win32-shared.tar.gz
-  - ffmpeg-3.3-win64-shared.tar.gz
+    - ffmpeg-3.3-win32-shared.tar.gz
+    - ffmpeg-3.3-win64-shared.tar.gz
+  skip_cleanup: true
   on:
     repo: moiamond/ffmpeg-dev
