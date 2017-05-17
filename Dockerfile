@@ -29,9 +29,9 @@ RUN apt-get update && apt-get install -y \
         nasm \
         && rm -rf /var/lib/apt/list/*
 
-WORKDIR /build
+WORKDIR /build/sandbox
 
-COPY ./mingw-w64-build-3.6.7.local /build/mingw-w64-build-3.6.7.local
-COPY ./install_cross_compiler.sh /build/install_cross_compiler.sh
+COPY ./mingw-w64-build-3.6.7.local mingw-w64-build-3.6.7.local
+COPY ./install_cross_compiler.sh install_cross_compiler.sh
 
 RUN ./install_cross_compiler.sh
