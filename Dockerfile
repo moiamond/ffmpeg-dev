@@ -27,6 +27,8 @@ RUN apt-get update && apt-get install -y \
         xz-utils \
         ed \
         nasm \
+        gperf \
+        autogen \
         && rm -rf /var/lib/apt/list/*
 
 WORKDIR /build/sandbox
