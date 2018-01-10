@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+cpu_count="$(grep -c processor /proc/cpuinfo 2>/dev/null)" # linux cpu count
+if [ -z "$cpu_count" ]; then
+  cpu_count=`sysctl -n hw.ncpu | tr -d '\n'` # OS X
+  if [ -z "$cpu_count" ]; then
+    echo "warning, unable to determine cpu count, defaulting to 1"
+    cpu_count=1 # else default to just 1, instead of blank, which means infinite
+  fi
+fi
+
 install_cross_compiler() {
   local win32_gcc="cross_compilers/mingw-w64-i686/bin/i686-w64-mingw32-gcc"
   local win64_gcc="cross_compilers/mingw-w64-x86_64/bin/x86_64-w64-mingw32-gcc"
@@ -11,14 +20,12 @@ install_cross_compiler() {
 
     unset CFLAGS # don't want these "windows target" settings used the compiler itself since it creates executables to run on the local box (we have a parameter allowing them to set them for the script "all builds" basically)
     # pthreads version to avoid having to use cvs for it
-    echo "starting to download and build cross compile version of gcc [requires working internet access] with thread count $gcc_cpu_count..."
+    echo "starting to download and build cross compile version of gcc [requires working internet access] with thread count $cpu_count..."
     echo ""
 
     # --disable-shared allows c++ to be distributed at all...which seemed necessary for some random dependency which happens to use/require c++...
     local zeranoe_script_name=mingw-w64-build-r22.local
-    # add --mingw-w64-ver=git for updated tuner.h [dshow dtv] at least not present in 4.0.6 TODO bump to v 5 when released, if released
-    # actually git make "faster" builds for some reason, so leave for now, known working commit: d9ce1abe40efb835609e646b1533acab4a404d03
-    local zeranoe_script_options="--clean-build --disable-shared --default-configure  --pthreads-w32-ver=2-9-1 --cpu-count=$gcc_cpu_count --mingw-w64-ver=5.0.1 --gcc-ver=4.9.4"
+    local zeranoe_script_options="--gcc-ver=7.1.0 --default-configure --cpu-count=$cpu_count --pthreads-w32-ver=2-9-1 --disable-shared --clean-build --verbose --allow-overwrite" # allow-overwrite to avoid some crufty prompts if I do rebuilds [or maybe should just nuke everything...]
     cp ../$zeranoe_script_name .
 
     echo "building win32 cross compiler..."
