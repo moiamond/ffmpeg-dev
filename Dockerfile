@@ -1,39 +1,12 @@
 
-FROM ubuntu:xenial
-MAINTAINER moiamond <moiamond@gmail.com>
+FROM moiamond/ffmpeg-dev:base
+LABEL maintainer="moiamond@gmail.com"
 
-RUN apt-get update && apt-get install -y \
-        subversion \
-        curl \
-        texinfo \
-        g++ \
-        bison \
-        flex \
-        cvs \
-        yasm \
-        automake \
-        libtool \
-        autoconf \
-        gcc \
-        cmake \
-        git \
-        make \
-        pkg-config \
-        zlib1g-dev \
-        mercurial \
-        unzip \
-        pax \
-        wget \
-        xz-utils \
-        ed \
-        nasm \
-        gperf \
-        autogen \
-        && rm -rf /var/lib/apt/list/*
+USER root
+WORKDIR /build
 
-WORKDIR /build/sandbox
-
-COPY ./mingw-w64-build-r22.local mingw-w64-build-r22.local
-COPY ./install_cross_compiler.sh install_cross_compiler.sh
+# copy some files
+COPY install_cross_compiler.sh .
+COPY patches ./patches/
 
 RUN ./install_cross_compiler.sh
