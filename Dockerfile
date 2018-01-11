@@ -6,5 +6,12 @@ WORKDIR /build
 COPY cross_compile_ffmpeg.sh .
 COPY patches ./patches/
 
-CMD         ["--help"]
-ENTRYPOINT  ["./cross_compile_ffmpeg.sh"]
+RUN ./cross_compile_ffmpeg.sh   --sandbox-ok=y \
+                                --build-amd-amf=y \
+                                --build-intel-qsv=y \
+                                --git-get-latest=y \
+                                --disable-nonfree=n \
+                                --compiler-flavors=multi \
+                                --prefer-stable=y \
+                                --enable-gpl=y \
+                                --high-bitdepth=n

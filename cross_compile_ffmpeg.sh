@@ -2125,7 +2125,7 @@ if [[ $compiler_flavors == "multi" || $compiler_flavors == "win32" ]]; then
   mkdir -p win32
   cd win32
     build_dependencies
-    build_apps
+    #build_apps
   cd ..
 fi
 
@@ -2143,7 +2143,7 @@ if [[ $compiler_flavors == "multi" || $compiler_flavors == "win64" ]]; then
   mkdir -p win64
   cd win64
     build_dependencies
-    build_apps
+    #build_apps
   cd ..
 fi
 
