@@ -2,29 +2,25 @@ ffmpeg-dev
 
 
 ```
-docker build -t moiamond/ffmpeg-dev:windows-build .
+docker build -t moiamond/ffmpeg-dev:windows-build-apps .
 ```
 
 ```
-docker run moiamond/ffmpeg-dev:windows-build    --sandbox-ok=y \
-                                                --ffmpeg-git-checkout-version=master \
-                                                --build-libmxf=n \
-                                                --build-mp4box=n \
-                                                --build-ismindex=n \
-                                                --git-get-latest=y \
-                                                --build-intel-qsv=y \
-                                                --build-x264-with-libav=n \
-                                                --build-mplayer=n \
-                                                --cflags='-mtune=generic -O3' \
-                                                --build-vlc=n \
-                                                --build-lsw=n \
-                                                --build-dvbtee=n \
-                                                --disable-nonfree=n \
-                                                --compiler-flavors=multi \
-                                                --build-ffmpeg-static=y \
-                                                --build-ffmpeg-shared=n \
-                                                --prefer-stable=y \
-                                                --enable-gpl=y \
-                                                --high-bitdepth=n \
-                                                --debug
+docker run moiamond/ffmpeg-dev:windows-build-apps    --sandbox-ok=y \
+                                                    --ffmpeg-git-checkout-version=master \
+                                                    --git-get-latest=y \
+                                                    --disable-nonfree=n \
+                                                    --enable-gpl=y \
+                                                    --build-intel-qsv=y \
+                                                    --compiler-flavors=multi \
+                                                    --prefer-stable=y \
+                                                    --high-bitdepth=n \
+                                                    --build-ffmpeg-static=y \
+                                                    --build-ffmpeg-shared=n \
+                                                    --build-dvbtee=n \
+                                                    --build-libmxf=n \
+                                                    --build-mp4box=n \
+                                                    --build-mplayer=n \
+                                                    --build-vlc=n \
+                                                    --build-lsw=n
 ```
