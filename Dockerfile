@@ -1,4 +1,4 @@
-FROM moiamond/ffmpeg-dev:windows-deps
+FROM moiamond/ffmpeg-dev:windows-deps-win32
 LABEL maintainer="moiamond@gmail.com"
 
 WORKDIR /build
