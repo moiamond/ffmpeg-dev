@@ -695,7 +695,8 @@ build_libxml2() {
 }
 
 build_fontconfig() {
-  download_and_unpack_file https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.gz
+  #download_and_unpack_file https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.gz
+  download_and_unpack_file http://sources.libreelec.tv/mirror/fontconfig/fontconfig-2.12.4.tar.gz
   cd fontconfig-2.12.4
     #if [[ ! -f Makefile.in.bak ]]; then # Library only. fails with older sed [OS x]
     #  sed -i.bak "/^SUBDIRS/s/fc.*/src/;438,439d;/^install-data-am/s/:.*/: install-pkgconfigDATA/;/\tinstall-xmlDATA$/d" Makefile.in
