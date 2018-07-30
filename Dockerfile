@@ -39,6 +39,14 @@ RUN apt-get update && apt-get install -y \
         autoconf-archive \
         && rm -rf /var/lib/apt/list/*
 
+RUN DIR=$(mktemp -d) && cd ${DIR} && \
+    curl -sL http://www.nasm.us/pub/nasm/releasebuilds/2.13.03/nasm-2.13.03.tar.xz | \
+    tar -Jvx  --strip-components=1 && \
+    ./configure && \
+    make && \
+    make install && \
+    rm -rf ${DIR}
+
 # create login group / user
 RUN groupadd $group \
         && useradd -m -g $group -s /bin/bash -G sudo $user \
