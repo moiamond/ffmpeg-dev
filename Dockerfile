@@ -35,6 +35,8 @@ RUN apt-get update && apt-get install -y \
         nasm \
         gperf \
         autogen \
+        bzip2 \
+        autoconf-archive \
         && rm -rf /var/lib/apt/list/*
 
 # create login group / user
