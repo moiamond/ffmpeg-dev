@@ -8,7 +8,8 @@ COPY cross_compile_ffmpeg.sh .
 COPY patches ./patches/
 
 
-RUN ./cross_compile_ffmpeg.sh   --sandbox-ok=y \
+RUN chmod +x ./cross_compile_ffmpeg.sh && \
+    ./cross_compile_ffmpeg.sh   --sandbox-ok=y \
                                 --install-cross-compiler=n \
                                 --build-ffmpeg-deps=y \
                                 --build-ffmpeg-static=n \
