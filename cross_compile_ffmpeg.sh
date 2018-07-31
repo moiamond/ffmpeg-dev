@@ -1065,8 +1065,8 @@ build_libbs2b() {
 }
 
 build_libsoxr() {
-  do_git_checkout https://git.code.sf.net/p/soxr/code soxr_git
-  cd soxr_git
+  download_and_unpack_file https://sourceforge.net/projects/soxr/files/soxr-0.1.3-Source.tar.xz
+  cd soxr-0.1.3-Source
     do_cmake_and_install "-DBUILD_SHARED_LIBS=0 -DHAVE_WORDS_BIGENDIAN_EXITCODE=0 -DWITH_OPENMP=0 -DBUILD_TESTS=0 -DBUILD_EXAMPLES=0"
   cd ..
 }
@@ -1226,7 +1226,7 @@ build_libass() {
 }
 
 build_libxavs() {
-  do_svn_checkout https://svn.code.sf.net/p/xavs/code/trunk xavs_svn
+  do_git_checkout https://github.com/pandastream/xavs xavs_svn
   cd xavs_svn
     if [[ ! -f Makefile.bak ]]; then
       sed -i.bak "s/O4/O2/" configure # Change CFLAGS.
@@ -2018,8 +2018,10 @@ if [[ $OSTYPE == "darwin17" ]]; then
 fi
 
 # variables with their defaults
+install_cross_compiler=y
 build_ffmpeg_static=y
 build_ffmpeg_shared=n
+build_ffmpeg_deps=y
 build_dvbtee=n
 build_libmxf=n
 build_mp4box=n
@@ -2054,8 +2056,10 @@ build_x264_with_libav=n # To build x264 with Libavformat.
 while true; do
   case $1 in
     -h | --help ) echo "available option=default_value:
+      --install-cross-compiler=y  (Mingw)
       --build-ffmpeg-static=y  (ffmpeg.exe, ffplay.exe and ffprobe.exe)
       --build-ffmpeg-shared=n  (ffmpeg.exe (with libavformat-x.dll, etc., ffplay.exe, ffprobe.exe and dll-files)
+      --build-ffmpeg-deps=[y] set to n to ignore build_ffmpeg_dependencies
       --ffmpeg-git-checkout-version=[master] if you want to build a particular version of FFmpeg, ex: n3.1.1 or a specific git hash
       --gcc-cpu-count=[number of cpu cores set it higher than 1 if you have multiple cores and > 1GB RAM, this speeds up initial cross compiler build. FFmpeg build uses number of cores no matter what]
       --disable-nonfree=y (set to n to include nonfree like libfdk-aac,decklink)
@@ -2103,8 +2107,10 @@ while true; do
                  build_dvbtee=y; build_x264_with_libav=y; shift ;;
     -d         ) gcc_cpu_count=$cpu_count; disable_nonfree="y"; sandbox_ok="y"; compiler_flavors="win32"; git_get_latest="n"; shift ;;
     --compiler-flavors=* ) compiler_flavors="${1#*=}"; shift ;;
+    --install-cross-compiler=* ) install_cross_compiler="${1#*=}"; shift ;;
     --build-ffmpeg-static=* ) build_ffmpeg_static="${1#*=}"; shift ;;
     --build-ffmpeg-shared=* ) build_ffmpeg_shared="${1#*=}"; shift ;;
+    --build-ffmpeg-deps=* ) build_ffmpeg_deps="${1#*=}"; shift ;;
     --prefer-stable=* ) prefer_stable="${1#*=}"; shift ;;
     --enable-gpl=* ) enable_gpl="${1#*=}"; shift ;;
     --high-bitdepth=* ) high_bitdepth="${1#*=}"; shift ;;
@@ -2118,7 +2124,9 @@ done
 reset_cflags # also overrides any "native" CFLAGS, which we may need if there are some 'linux only' settings in there
 check_missing_packages # do this first since it's annoying to go through prompts then be rejected
 intro # remember to always run the intro, since it adjust pwd
-install_cross_compiler
+if [[ $install_cross_compiler = "y" ]]; then
+  install_cross_compiler
+fi
 
 export PKG_CONFIG_LIBDIR= # disable pkg-config from finding [and using] normal linux system installed libs [yikes]
 
@@ -2169,7 +2177,10 @@ if [[ $compiler_flavors == "multi" || $compiler_flavors == "win32" ]]; then
   make_prefix_options="CC=${cross_prefix}gcc AR=${cross_prefix}ar PREFIX=$mingw_w64_x86_64_prefix RANLIB=${cross_prefix}ranlib LD=${cross_prefix}ld STRIP=${cross_prefix}strip CXX=${cross_prefix}g++"
   mkdir -p win32
   cd win32
-    build_ffmpeg_dependencies
+    if [[ $build_ffmpeg_deps = "y" ]]; then
+      build_ffmpeg_dependencies
+      rm -rf *
+    fi
     build_apps
   cd ..
 fi
@@ -2187,10 +2198,16 @@ if [[ $compiler_flavors == "multi" || $compiler_flavors == "win64" ]]; then
   make_prefix_options="CC=${cross_prefix}gcc AR=${cross_prefix}ar PREFIX=$mingw_w64_x86_64_prefix RANLIB=${cross_prefix}ranlib LD=${cross_prefix}ld STRIP=${cross_prefix}strip CXX=${cross_prefix}g++"
   mkdir -p win64
   cd win64
-    build_ffmpeg_dependencies
+    if [[ $build_ffmpeg_deps = "y" ]]; then
+      build_ffmpeg_dependencies
+      rm -rf *
+    fi
     build_apps
   cd ..
 fi
+
+echo "Cleanup..."
+rm -rf /build/sandbox/win*
 
 echo "searching for all local exe's (some may not have been built this round, NB)..."
 for file in $(find_all_build_exes); do

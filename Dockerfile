@@ -1,12 +1,23 @@
 
-FROM moiamond/ffmpeg-dev:base
+FROM moiamond/ffmpeg-dev:crosstools-win
 LABEL maintainer="moiamond@gmail.com"
 
-USER root
 WORKDIR /build
 
-# copy some files
-COPY install_cross_compiler.sh .
+COPY cross_compile_ffmpeg.sh .
 COPY patches ./patches/
 
-RUN ./install_cross_compiler.sh
+
+RUN ./cross_compile_ffmpeg.sh   --sandbox-ok=y \
+                                --install-cross-compiler=n \
+                                --build-ffmpeg-deps=y \
+                                --build-ffmpeg-static=n \
+                                --build-ffmpeg-shared=n \
+                                --build-amd-amf=y \
+                                --build-intel-qsv=y \
+                                --git-get-latest=y \
+                                --disable-nonfree=n \
+                                --compiler-flavors=multi \
+                                --prefer-stable=y \
+                                --enable-gpl=y \
+                                --high-bitdepth=n
