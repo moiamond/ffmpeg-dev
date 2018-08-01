@@ -1,5 +1,5 @@
 
-FROM moiamond/ffmpeg-dev:crosstools-win
+FROM moiamond/ffmpeg-dev:install-deps-win32
 LABEL maintainer="moiamond@gmail.com"
 
 WORKDIR /build
@@ -16,7 +16,7 @@ RUN chmod +x ./cross_compile_ffmpeg.sh && \
                                 --build-ffmpeg-shared=n \
                                 --build-amd-amf=y \
                                 --build-intel-qsv=y \
-                                --git-get-latest=y \
+                                --git-get-latest=n \
                                 --disable-nonfree=n \
                                 --compiler-flavors=multi \
                                 --prefer-stable=y \
