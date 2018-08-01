@@ -2206,9 +2206,6 @@ if [[ $compiler_flavors == "multi" || $compiler_flavors == "win64" ]]; then
   cd ..
 fi
 
-echo "Cleanup..."
-rm -rf /build/sandbox/win*
-
 echo "searching for all local exe's (some may not have been built this round, NB)..."
 for file in $(find_all_build_exes); do
   echo "built $file"
