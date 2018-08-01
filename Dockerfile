@@ -18,7 +18,7 @@ RUN chmod +x ./cross_compile_ffmpeg.sh && \
                                 --build-intel-qsv=y \
                                 --git-get-latest=n \
                                 --disable-nonfree=n \
-                                --compiler-flavors=multi \
+                                --compiler-flavors=win64 \
                                 --prefer-stable=y \
                                 --enable-gpl=y \
                                 --high-bitdepth=n
